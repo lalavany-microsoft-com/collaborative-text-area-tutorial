@@ -31,7 +31,7 @@ export const loadSharedDocumentModel = async () => {
     // populate document properties
     const { initialObjects } = container;
     const documentProperties = initialObjects.documentProperties as SharedMap;
-    documentProperties.set("i", "SampleDocTitle");
+    documentProperties.set("documentTitle", "SampleDocTitle");
     documentProperties.set("imageDPI", 0.5);
     documentProperties.set("imageCompression", 0.8);
 
@@ -360,7 +360,7 @@ export interface Stroke {
 }
 
 export interface IDrawingElements {
-  ttype: string;
+  type: string;
   id: string; // uuid
   width: number;
   height: number;

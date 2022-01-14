@@ -1,28 +1,29 @@
 import { DataObject, DataObjectFactory } from "@fluidframework/aqueduct";
 import { IMyImage } from "./IMyImage";
-import { IFluidHandle } from "@fluidframework/core-interfaces";
 
 export class MyData extends DataObject implements IMyImage {
   public async getBlob() {
-    const dataPromise = this.root.get("image") as IFluidHandle<ArrayBufferLike>;
-    if (dataPromise) {
-      const data = await dataPromise.get();
-      return new Blob([new Uint8Array(data)]);
+    const base64 = this.root.get("image");
+    if (base64) {
+      return await (await fetch(base64)).blob();
     } else {
       return Promise.resolve(undefined);
     }
   }
 
+  blobToBase64(blob: Blob) {
+    return new Promise((resolve, _) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result as string);
+      reader.readAsDataURL(blob);
+    });
+  }
+
   public setBlob(blob: Blob | undefined) {
     if (blob) {
-      new Response(blob)
-        .arrayBuffer()
-        .then((arrayBufferLike) => {
-          return this.runtime.uploadBlob(arrayBufferLike);
-        })
-        .then((fluidHandle) => {
-          this.root.set("image", fluidHandle);
-        });
+      this.blobToBase64(blob).then((base64) => {
+        this.root.set("image", base64);
+      });
     } else {
       this.root.set("image", blob);
     }
