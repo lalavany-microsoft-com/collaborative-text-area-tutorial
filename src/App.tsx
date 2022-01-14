@@ -1,24 +1,35 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+
+import React, { ChangeEvent } from "react";
+import {getContainer} from "./myDataObject/MyDataLoader";
+import { IMyImage } from "./myDataObject/IMyImage";
 
 function App() {
+  const [image, setImage] = React.useState<string>();
+  const [sharedData, setSharedData] = React.useState<IMyImage>();
+  
+  React.useEffect(() => {
+    getContainer().then(myImage => {
+      setSharedData(myImage);
+      myImage.on("imageChanged", async () => {
+        myImage.getBlob().then(blob => {
+          setImage(blob ? URL.createObjectURL(blob) : undefined);
+        })
+      });
+    });
+  },[]);
+
+  const onImageSelected = async (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target?.files?.length && sharedData) {
+        const file = e.target.files[0];
+        sharedData.setBlob(file);
+    }
+};
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      <input type="file" alt="" multiple={false} onChange={onImageSelected} accept={"image/*"} disabled={sharedData === undefined} />
+      <img alt={`${image}`} src={image}/>
     </div>
   );
 }
