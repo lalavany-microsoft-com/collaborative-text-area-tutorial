@@ -6,14 +6,32 @@ export interface ITextStickerDrawingElement extends IDrawingElement {
 }
 
 export interface ITextStickerStyle {
-  baseStyleId: string; // enum
+  baseStyleId: TextStyleId; // enum
   fontName?: string;
   fontSize?: string;
-  themeId?: number; // enum
+  themeId?: TextStyleThemeId; // enum
   textColor?: string;
   backgroundColor?: string;
   backgroundAlpha?: number;
   cornerRadius?: number;
   borderWidth?: number;
   borderColor?: string;
+}
+
+export enum TextStyleId {
+  none,
+  regular,
+  watermark,
+  strong,
+  highlight,
+}
+
+export enum TextStyleThemeId {
+  red,
+  blue,
+  black,
+  white,
+  yellow,
+  green,
+  none,
 }

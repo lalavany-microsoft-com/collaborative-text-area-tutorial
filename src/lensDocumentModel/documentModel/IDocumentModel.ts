@@ -1,10 +1,5 @@
-import { IDOM } from "../DOM/IDOM";
-import { IROM } from "../ROM/IROM";
-
 export interface IDocumentModel {
-  documentId: string;
-  dom: IDOM;
-  rom: IROM;
+  getDocumentId: () => string;
 }
 
 export const createDocumentModel = async (): Promise<IDocumentModel> => {

@@ -15,7 +15,7 @@ export interface OriginalVideoInfo {
 }
 
 export interface IProcessedVideoInfo {
-  clipData: ProcessedClipData[];
+  clipData: IProcessedClipData[];
   processedVideo?: Blob;
 }
 
@@ -24,7 +24,7 @@ export interface TrimData {
   endDuration: number;
 }
 
-export interface ProcessedClipData {
+export interface IProcessedClipData {
   trimData: TrimData;
   processedClipVideo: Blob;
 }

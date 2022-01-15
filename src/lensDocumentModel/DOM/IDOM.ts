@@ -2,6 +2,8 @@ import { IDocumentProperties } from "../documentProperties/IDocumentProperties";
 import { IEntity } from "../entity/IEntity";
 
 export interface IDOM {
-  documentProperties: IDocumentProperties;
-  entityMap: Map<string, IEntity>;
+  getDocumentProperties: () => IDocumentProperties;
+  addEntity: (entity: IEntity) => void;
+  removeEntity: (entityId: string) => void;
+  getEntity: (entityId: string) => IEntity;
 }
